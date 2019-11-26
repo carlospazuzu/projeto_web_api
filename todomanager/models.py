@@ -1,11 +1,11 @@
 from django.db import models
 
 class ProjectUser(models.Model):
-    name = models.CharField(max_length=254, null=False)
+    name = models.CharField(max_length=254, null=False, unique=True)
 
 
 class Label(models.Model):
-    name = models.CharField(max_length=50, null=False)
+    name = models.CharField(max_length=50, null=False, unique=True)
 
 
 class Project(models.Model):
