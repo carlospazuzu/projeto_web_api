@@ -7,6 +7,8 @@ urlpatterns = [
         path('labels/', views.LabelList.as_view(), name=views.LabelList.name),
         path('labels/<int:pk>/', views.LabelDetail.as_view(), name=views.LabelDetail.name),
         path('projects/', views.ProjectList.as_view(), name=views.ProjectList.name),
-        path('projects/<int:pk>', views.ProjectDetail.as_view(), name=views.ProjectDetail.name)
+        path('projects/<int:pk>', views.ProjectDetail.as_view(), name=views.ProjectDetail.name),
+        path('activities/', views.ActivityList.as_view(), name=views.ActivityList.name),
+        path('activities/<int:pk>', views.ActivityDetail.as_view(), name=views.ActivityDetail.name)
 
 ]

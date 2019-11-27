@@ -14,21 +14,17 @@ class LabelSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'id', 'name']
 
 
-class ProjectSerializer(serializers.HyperlinkedModelSerializer): 
-    owner = ProjectUserSerializer(many=False, read_only=True)
-    contributors = ProjectUserSerializer(many=True, read_only=True)
-    label = serializers.PrimaryKeyRelatedField(many=False, queryset=Label.objects.all())  
+class ProjectSerializer(serializers.HyperlinkedModelSerializer):
+    activities = serializers.SlugRelatedField(many=True, queryset=Activity.objects.all(), slug_field='name')
 
     class Meta:
         model = Project
-        fields = ['url', 'id', 'priority', 'owner', 'contributors', 'label']    
+        fields = ['url', 'id', 'name', 'priority', 'owner', 'contributors', 'label', 'activities']    
 
 
 class ActivitySerializer(serializers.HyperlinkedModelSerializer): 
+    project = serializers.SlugRelatedField(many=False, queryset=Project.objects.all(), slug_field='name')
+
     class Meta:
         model = Activity
         fields = ['url', 'id', 'name', 'was_concluded', 'date_created', 'date_concluded', 'concluded_by', 'project']    
-
-
-
-

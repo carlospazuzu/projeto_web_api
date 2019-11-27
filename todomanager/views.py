@@ -39,3 +39,14 @@ class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
     name = 'project-detail'
 
 
+class ActivityList(generics.ListCreateAPIView):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    name = 'activity-list'
+
+
+class ActivityDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    name = 'activity-detail'
+
