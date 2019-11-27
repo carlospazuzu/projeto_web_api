@@ -15,11 +15,11 @@ class LabelSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
-    activities = serializers.SlugRelatedField(many=True, queryset=Activity.objects.all(), slug_field='name')
+    # activities = serializers.SlugRelatedField(many=True, queryset=Activity.objects.all(), slug_field='name')
 
     class Meta:
         model = Project
-        fields = ['url', 'id', 'name', 'priority', 'owner', 'contributors', 'label', 'activities']    
+        fields = ['url', 'id', 'name', 'priority', 'owner', 'contributors', 'label'] 
 
 
 class ActivitySerializer(serializers.HyperlinkedModelSerializer): 

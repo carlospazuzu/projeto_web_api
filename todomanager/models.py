@@ -33,7 +33,8 @@ class Project(models.Model):
     owner = models.ForeignKey(ProjectUser, related_name='proprietario', on_delete=models.CASCADE)
     contributors = models.ManyToManyField(ProjectUser, blank=True)
     label = models.ForeignKey(Label, related_name='etiqueta', on_delete=models.CASCADE)
-    activities = models.ForeignKey('Activity', null=True, related_name='atividades', on_delete=models.CASCADE)
+    # activities = models.ForeignKey('Activity', null=True, related_name='atividades', on_delete=models.CASCADE)
+
 
     def __str__(self):
         return self.name
