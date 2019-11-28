@@ -46,7 +46,7 @@ class Activity(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_concluded = models.DateTimeField(null=True)
     concluded_by = models.ForeignKey(ProjectUser, null=True, on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, related_name='projeto', on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, related_name='atividades', on_delete=models.CASCADE)
 
 
     def __str__(self):

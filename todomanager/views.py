@@ -32,11 +32,6 @@ class ProjectList(generics.ListCreateAPIView):
     serializer_class = ProjectSerializer
     name = 'project-list'
 
-    def get_queryset(self):
-        queryset = Project.objects.all()
-        print(queryset.activity_set.all())
-        return Project.objects.all() 
-
 
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView): 
     queryset = Project.objects.all()
