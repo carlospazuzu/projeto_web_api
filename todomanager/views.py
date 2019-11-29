@@ -2,8 +2,10 @@ from .models import ProjectUser, Project, Label, Activity
 from .serializers import ProjectUserSerializer, ProjectSerializer, LabelSerializer, ActivitySerializer, UserSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
-from rest_framework import permissions
+from rest_framework import permissions, filters
 from .permissions import IsOwnerOrReadOnly
+from django_filters import rest_framework as filters
+
 
 class ProjectUserList(generics.ListCreateAPIView): 
     queryset = ProjectUser.objects.all()
@@ -22,6 +24,9 @@ class LabelList(generics.ListCreateAPIView):
     serializer_class = LabelSerializer
     name = 'label-list'
 
+    def filter_queryset(self, queryset):
+        pass
+
 
 class LabelDetail(generics.RetrieveUpdateDestroyAPIView): 
     queryset = Label.objects.all()
@@ -30,14 +35,22 @@ class LabelDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ProjectList(generics.ListCreateAPIView): 
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    # permission_classes = [IsOwnerOrReadOnly]
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     name = 'project-list'
 
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_fields = ['name']
+
+    # filter_fields = ['name']
+    # search_fields = ['name']
+    # ordering_fields = ['name']
+
+    # def perform_create(self, serializer):
+        # serializer.save(owner=self.request.user)
 
 
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView): 
@@ -48,10 +61,17 @@ class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
     name = 'project-detail'
 
 
+
 class ActivityList(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
     name = 'activity-list'
+
+    def filter_queryset(self, queryset):
+        pass
+
 
 
 class ActivityDetail(generics.RetrieveUpdateDestroyAPIView):

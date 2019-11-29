@@ -31,7 +31,7 @@ class Project(models.Model):
     name = models.CharField(max_length=200, null=False)
     priority = models.CharField(max_length=1, choices=PRIORITY_CHOICES, default=NORMAL)
     # owner = models.ForeignKey(ProjectUser, related_name='proprietario', on_delete=models.CASCADE)
-    owner = models.ForeignKey('auth.User', related_name='projects', on_delete=models.CASCADE)
+    owner = models.ForeignKey(ProjectUser, related_name='projects', on_delete=models.CASCADE)
     contributors = models.ManyToManyField(ProjectUser, blank=True)
     label = models.ForeignKey(Label, related_name='etiqueta', on_delete=models.CASCADE)
     # activities = models.ForeignKey('Activity', null=True, related_name='atividades', on_delete=models.CASCADE)

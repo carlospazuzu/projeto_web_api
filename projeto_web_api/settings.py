@@ -11,15 +11,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'x+%4vl+%w%f$x4qaa1evol5101)t=$h+^)welm4#o-^u#a!p8b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -27,6 +18,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Application definition
 
@@ -39,10 +31,25 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Django Rest Framework
     'rest_framework',
+    # django-filters
+    'django_filters',
     # main app
-    'todomanager'
+    'todomanager',
+    # crispy forms
+    'crispy_forms'
 
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter'
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

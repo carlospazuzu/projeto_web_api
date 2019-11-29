@@ -17,7 +17,7 @@ class LabelSerializer(serializers.HyperlinkedModelSerializer):
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     # activities = serializers.SlugRelatedField(many=True, queryset=Activity.objects.all(), slug_field='name')
-    owner = serializers.ReadOnlyField(source='owner.username')
+    # owner = serializers.ReadOnlyField(source='owner.username')
 
     class Meta:
         model = Project
