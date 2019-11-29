@@ -1,7 +1,9 @@
 from .models import ProjectUser, Project, Label, Activity 
-from .serializers import ProjectUserSerializer, ProjectSerializer, LabelSerializer, ActivitySerializer
+from .serializers import ProjectUserSerializer, ProjectSerializer, LabelSerializer, ActivitySerializer, UserSerializer
 from rest_framework import generics
-
+from django.contrib.auth.models import User
+from rest_framework import permissions
+from .permissions import IsOwnerOrReadOnly
 
 class ProjectUserList(generics.ListCreateAPIView): 
     queryset = ProjectUser.objects.all()
@@ -28,12 +30,19 @@ class LabelDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ProjectList(generics.ListCreateAPIView): 
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     name = 'project-list'
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
 
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView): 
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     name = 'project-detail'
@@ -50,3 +59,12 @@ class ActivityDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ActivitySerializer
     name = 'activity-detail'
 
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
