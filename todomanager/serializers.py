@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ProjectUser, Label, Project, Activity  
+from .models import ProjectUser, Label, Project, Activity, Timeline  
 from django.contrib.auth.models import User
 
 
@@ -38,3 +38,10 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'projects']
+
+
+
+class TimelineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Timeline
+        fields = ['id', 'timestamp', 'log']

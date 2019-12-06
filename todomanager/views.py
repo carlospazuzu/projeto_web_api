@@ -1,5 +1,5 @@
-from .models import ProjectUser, Project, Label, Activity 
-from .serializers import ProjectUserSerializer, ProjectSerializer, LabelSerializer, ActivitySerializer, UserSerializer
+from .models import ProjectUser, Project, Label, Activity, Timeline
+from .serializers import ProjectUserSerializer, ProjectSerializer, LabelSerializer, ActivitySerializer, UserSerializer, TimelineSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
 from rest_framework import permissions, filters
@@ -24,8 +24,14 @@ class LabelList(generics.ListCreateAPIView):
     serializer_class = LabelSerializer
     name = 'label-list'
 
-    def filter_queryset(self, queryset):
-        pass
+    # def filter_queryset(self, queryset):
+    #     pass
+
+    def perform_create(self, serializer):
+        # serializer.save(owner=self.request.user)
+        # print(self.request.data)
+        Timeline.objects.create(log="A Etiqueta " + self.request.data['name'] + " foi criada!")
+        serializer.save()
 
 
 class LabelDetail(generics.RetrieveUpdateDestroyAPIView): 
@@ -36,7 +42,7 @@ class LabelDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class ProjectList(generics.ListCreateAPIView): 
     # permission_classes = [IsOwnerOrReadOnly]
-    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
@@ -49,8 +55,9 @@ class ProjectList(generics.ListCreateAPIView):
     # search_fields = ['name']
     # ordering_fields = ['name']
 
-    # def perform_create(self, serializer):
-        # serializer.save(owner=self.request.user)
+    def perform_create(self, serializer):
+        Timeline.objects.create(log="O usuário" + str(self.request.user) + " criou o Projeto " + self.request.data['name'] + "!")        
+        serializer.save(owner=self.request.user)
 
 
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView): 
@@ -63,14 +70,14 @@ class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ActivityList(generics.ListCreateAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
     name = 'activity-list'
 
-    def filter_queryset(self, queryset):
-        pass
+    # def filter_queryset(self, queryset):
+    #     pass
 
 
 
@@ -83,8 +90,22 @@ class ActivityDetail(generics.RetrieveUpdateDestroyAPIView):
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    name = 'user-list'
 
 
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    name = 'user-detail'
+
+
+class TimelineList(generics.ListCreateAPIView):
+    queryset = Timeline.objects.all()
+    serializer_class = TimelineSerializer
+    name = 'timeline-list'
+
+
+class TimelineDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Timeline.objects.all()
+    serializer_class = TimelineSerializer
+    name = 'timeline-detail'

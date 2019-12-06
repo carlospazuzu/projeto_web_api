@@ -31,7 +31,7 @@ class Project(models.Model):
     name = models.CharField(max_length=200, null=False)
     priority = models.CharField(max_length=1, choices=PRIORITY_CHOICES, default=NORMAL)
     # owner = models.ForeignKey(ProjectUser, related_name='proprietario', on_delete=models.CASCADE)
-    owner = models.ForeignKey(ProjectUser, related_name='projects', on_delete=models.CASCADE)
+    owner = models.ForeignKey('auth.User', related_name='projects', null=True, on_delete=models.CASCADE)
     contributors = models.ManyToManyField(ProjectUser, blank=True)
     label = models.ForeignKey(Label, related_name='etiqueta', on_delete=models.CASCADE)
     # activities = models.ForeignKey('Activity', null=True, related_name='atividades', on_delete=models.CASCADE)
@@ -54,3 +54,11 @@ class Activity(models.Model):
         return self.name
 
 
+
+class Timeline(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    log = models.CharField(max_length=254)
+
+
+    def __str__(self):
+        return str(self.timestamp.strftime("%b %d %Y %H:%M:%S")) + ' - ' + self.log
