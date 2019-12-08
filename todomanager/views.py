@@ -2,7 +2,7 @@ from .models import ProjectUser, Project, Label, Activity, Timeline
 from .serializers import ProjectUserSerializer, ProjectSerializer, LabelSerializer, ActivitySerializer, UserSerializer, TimelineSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
-from rest_framework import permissions, filters
+from rest_framework import permissions, filters as rfilters
 from .permissions import IsOwnerOrReadOnly
 from django_filters import rest_framework as filters
 
@@ -20,6 +20,8 @@ class ProjectUserDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class LabelList(generics.ListCreateAPIView): 
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
     queryset = Label.objects.all()
     serializer_class = LabelSerializer
     name = 'label-list'
@@ -35,6 +37,8 @@ class LabelList(generics.ListCreateAPIView):
 
 
 class LabelDetail(generics.RetrieveUpdateDestroyAPIView): 
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
     queryset = Label.objects.all()
     serializer_class = LabelSerializer
     name = 'label-detail'
@@ -48,20 +52,22 @@ class ProjectList(generics.ListCreateAPIView):
     serializer_class = ProjectSerializer
     name = 'project-list'
 
-    filter_backends = [filters.DjangoFilterBackend]
-    filterset_fields = ['name']
+    filter_backends = [filters.DjangoFilterBackend, rfilters.SearchFilter, rfilters.OrderingFilter]
+    filterset_fields = ['label']
+    search_fields = ['name']
+    ordering_fields = ['name']
 
     # filter_fields = ['name']
     # search_fields = ['name']
     # ordering_fields = ['name']
 
     def perform_create(self, serializer):
-        Timeline.objects.create(log="O usuário" + str(self.request.user) + " criou o Projeto " + self.request.data['name'] + "!")        
+        Timeline.objects.create(log="O usuário " + str(self.request.user) + " criou o Projeto " + self.request.data['name'] + "!")        
         serializer.save(owner=self.request.user)
 
 
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView): 
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
@@ -76,18 +82,25 @@ class ActivityList(generics.ListCreateAPIView):
     serializer_class = ActivitySerializer
     name = 'activity-list'
 
+    filter_backends = [filters.DjangoFilterBackend, rfilters.SearchFilter, rfilters.OrderingFilter]
+    filterset_fields = ['project', 'date_created']
+    search_fields = ['name']
+    ordering_fields = ['name']
+
     # def filter_queryset(self, queryset):
     #     pass
 
 
 
 class ActivityDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
     name = 'activity-detail'
 
 
-class UserList(generics.ListAPIView):
+class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     name = 'user-list'
@@ -99,13 +112,10 @@ class UserDetail(generics.RetrieveAPIView):
     name = 'user-detail'
 
 
-class TimelineList(generics.ListCreateAPIView):
+class TimelineList(generics.ListAPIView):
+    permission_classes = [permissions.IsAdminUser, permissions.IsAuthenticated]
+
     queryset = Timeline.objects.all()
     serializer_class = TimelineSerializer
     name = 'timeline-list'
 
-
-class TimelineDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Timeline.objects.all()
-    serializer_class = TimelineSerializer
-    name = 'timeline-detail'

@@ -33,11 +33,17 @@ class ActivitySerializer(serializers.HyperlinkedModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    projects = serializers.PrimaryKeyRelatedField(many=True, queryset=Project.objects.all())
+    # projects = serializers.PrimaryKeyRelatedField(many=True, queryset=Project.objects.all())
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'projects']
+        fields = ['id', 'username', 'password', 'email']
+
+
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
+
+
 
 
 
