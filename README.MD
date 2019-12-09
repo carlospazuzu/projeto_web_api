@@ -1,6 +1,9 @@
 # Todo Manager
 É uma REST API que se propõe a gerenciar tarefas pessoais divididos em projetos, atividades e rotuladas por etiquetas.
 
+### Integrantes:
+- Carlos Henrique Rodrigues
+- Geovane Narciso
 
 ## Modelo Entidade-Relacionamento
 
