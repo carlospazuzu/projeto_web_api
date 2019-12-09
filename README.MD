@@ -5,3 +5,8 @@
 ## Modelo Entidade-Relacionamento
 
 ![](https://i.imgur.com/vZB3N6t.png)
+
+
+## Vídeos
+
+Clique [Aqui](https://www.youtube.com/playlist?list=PLpvUwWqWYQqEWvsqW2rgo5-sQeozCSM5v) para acessar a playlist de vídeos com a utilização do aplicativo 
