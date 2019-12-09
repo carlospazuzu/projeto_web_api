@@ -1,12 +1,12 @@
-from .models import ProjectUser, Project, Label, Activity, Timeline
-from .serializers import ProjectUserSerializer, ProjectSerializer, LabelSerializer, ActivitySerializer, UserSerializer, TimelineSerializer
+from .models import Project, Label, Activity, Timeline
+from .serializers import ProjectSerializer, LabelSerializer, ActivitySerializer, UserSerializer, TimelineSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
 from rest_framework import permissions, filters as rfilters
 from .permissions import IsOwnerOrReadOnly
 from django_filters import rest_framework as filters
 
-
+"""
 class ProjectUserList(generics.ListCreateAPIView): 
     queryset = ProjectUser.objects.all()
     serializer_class = ProjectUserSerializer
@@ -17,6 +17,7 @@ class ProjectUserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = ProjectUser.objects.all()
     serializer_class = ProjectUserSerializer
     name = 'projectuser-detail'
+"""
 
 
 class LabelList(generics.ListCreateAPIView): 

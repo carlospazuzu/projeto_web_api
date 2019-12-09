@@ -1,13 +1,13 @@
 from rest_framework import serializers
-from .models import ProjectUser, Label, Project, Activity, Timeline  
+from .models import Label, Project, Activity, Timeline  
 from django.contrib.auth.models import User
 
-
+"""
 class ProjectUserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ProjectUser
         fields = ['url', 'id', 'name']
-
+"""
 
 class LabelSerializer(serializers.HyperlinkedModelSerializer): 
     class Meta:
@@ -25,7 +25,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ActivitySerializer(serializers.HyperlinkedModelSerializer): 
-    project = serializers.SlugRelatedField(many=False, queryset=Project.objects.all(), slug_field='name')
+    # project = serializers.SlugRelatedField(many=False, queryset=Project.objects.all(), slug_field='name')
 
     class Meta:
         model = Activity
@@ -42,8 +42,6 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
-
-
 
 
 

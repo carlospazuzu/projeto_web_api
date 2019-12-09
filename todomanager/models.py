@@ -1,11 +1,12 @@
 from django.db import models
 
+"""
 class ProjectUser(models.Model):
     name = models.CharField(max_length=254, null=False, unique=True)
 
     def __str__(self):
         return self.name
-
+"""
 
 class Label(models.Model):
     name = models.CharField(max_length=50, null=False, unique=True)
@@ -33,7 +34,7 @@ class Project(models.Model):
     # owner = models.ForeignKey(ProjectUser, related_name='proprietario', on_delete=models.CASCADE)
     owner = models.ForeignKey('auth.User', related_name='projects', null=True, on_delete=models.CASCADE)
     contributors = models.ManyToManyField('auth.User', blank=True)
-    label = models.ForeignKey(Label, related_name='etiqueta', on_delete=models.CASCADE)
+    label = models.ForeignKey(Label, related_name='etiqueta', null=True, on_delete=models.CASCADE)
     # activities = models.ForeignKey('Activity', null=True, related_name='atividades', on_delete=models.CASCADE)
 
 
