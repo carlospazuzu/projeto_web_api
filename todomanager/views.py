@@ -58,7 +58,7 @@ class ProjectList(generics.ListCreateAPIView):
     name = 'project-list'
 
     filter_backends = [filters.DjangoFilterBackend, rfilters.SearchFilter, rfilters.OrderingFilter]
-    filterset_fields = ['label']
+    filterset_fields = ['label', 'owner']
     search_fields = ['name']
     ordering_fields = ['name']
 
